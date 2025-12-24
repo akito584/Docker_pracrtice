@@ -1,0 +1,18 @@
+# // docker-compose.yml
+version: '3'
+
+services:
+  # サービス名（web担当）
+  web:
+    # 現在のフォルダ(.)にあるDockerfileを使ってビルドせよ
+    build: .
+    # ポート転送: あなたのPCの3000番 -> コンテナの3000番
+    ports:
+      - "3000:3000"
+    # 【重要】ここが魔法の仕掛け
+    # あなたのPCのフォルダ(.)を、コンテナの中(/app)と同期させる
+    volumes:
+      - .:/app
+      - /app/node_modules
+    environment:
+      - HOSTNAME=0.0.0.0
