@@ -1,0 +1,28 @@
+name: CI
+
+on:
+  push:
+    branches: [ "main", "master" ]
+  pull_request:
+    branches: [ "main", "master" ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Start containers
+      run: docker compose up -d --build
+
+    - name: Wait for service to start
+      run: sleep 10
+
+    - name: Test site availability
+      run: curl -f http://localhost:3000
+
+    - name: Stop containers
+      if: always()
+      run: docker compose down
